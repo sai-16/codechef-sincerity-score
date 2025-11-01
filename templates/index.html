@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CodeChef Contest Processor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center text-primary mb-4">CodeChef Contest Data Processor</h2>
+
+        {% if not download_link %}
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Members File (.csv)</label>
+                <input class="form-control" type="file" name="members" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold"> CodeChef File (.xlsx)</label>
+                <input class="form-control" type="file" name="codechef" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold"> Feedback File (.xlsx)</label>
+                <input class="form-control" type="file" name="feedback" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">CC Handles File (.xlsx)</label>
+                <input class="form-control" type="file" name="handles" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Contest Number (e.g., 210)</label>
+                <input class="form-control" type="number" name="no" required>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary px-4 py-2">Generate File</button>
+            </div>
+        </form>
+        {% else %}
+        <div class="text-center">
+            <h4 class="text-success fw-bold mb-3">File Generated Successfully!</h4>
+            <p class="text-muted">Click below to download your processed Excel file for CodeChef START{{ contest_no }}</p>
+            <a href="/{{ download_link }}" class="btn btn-success px-4 py-2">⬇Download Processed File</a>
+            <div class="mt-4">
+                <a href="/" class="btn btn-outline-primary">Process Another Contest</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>
