@@ -84,10 +84,8 @@ def app():
     </style>
     """, unsafe_allow_html=True)
 
-    st.title("CodeChef Data Processor")
-    st.markdown("""
-    This application processes four data files to generate a consolidated report for CodeChef Starters events, calculating scores and generating automated feedback.
-    """)
+    st.title("CodeChef Sincerity Score")
+ 
     st.header("1. Upload Data Files")
     col1, col2 = st.columns(2)
     
