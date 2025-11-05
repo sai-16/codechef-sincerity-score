@@ -3,6 +3,15 @@ import pandas as pd
 import re
 import io
 
+# ==============================================================================
+# DEPLOYMENT NOTE: For this application to run on cloud services like Streamlit Cloud,
+# the following packages MUST be listed in a separate file named 'requirements.txt'
+# in the same directory:
+# streamlit
+# pandas
+# openpyxl
+# ==============================================================================
+
 def fn_for_streamlit(codechef_df, members_df, feedback_df, handles_df, no):
     # This function relies on exact column names from the dataframes passed to it.
 
