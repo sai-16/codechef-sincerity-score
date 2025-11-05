@@ -10,60 +10,45 @@ def fn_for_streamlit(codechef_df, members_df, feedback_df, handles_df, no):
     data1 = members_df.copy()
     data2 = feedback_df.copy()
     handles = handles_df.copy()
-    
     data.replace("Not Participated", 0, inplace=True)
     data['Roll No'] = data['Roll No'].astype(str).str.lower()
 
-    # Identify and sum Starter columns
     starter_cols = [col for col in data.columns if re.findall(r'Starters\s*\d+', col)]
     data['solve'] = data[starter_cols].sum(axis=1)
 
-    # Drop columns
     cols_to_drop = [col for col in starter_cols + ['Batch'] if col in data.columns]
     data.drop(columns=cols_to_drop, inplace=True, errors='ignore')
-    
-    # Merge with members data
     data1['Roll No'] = data1['username'].astype(str).str.split('-').str[0].str.lower()
     merged_df = pd.merge(data, data1, on='Roll No', how='inner')
 
     final_df = merged_df[['email', 'Roll No', 'solve']]
-    
-    # Merge with feedback data
     data2.rename(columns={'Roll Number': 'Roll No'}, inplace=True)
     data2['Roll No'] = data2['Roll No'].astype(str).str.lower()
     df = pd.merge(final_df, data2, on='Roll No', how='left')
-    
-    # Merge with handles data
     df.rename(columns={'Roll No': 'RollNumber'}, inplace=True)
     handles['RollNumber'] = handles['roll_number'].astype(str).str.lower()
+
     handle_cols = ['RollNumber', 'CODECHEF'] if 'CODECHEF' in handles.columns else ['RollNumber']
     handles = handles[handle_cols]
     df = df.merge(handles, on='RollNumber', how='left')
-    
     df.rename(columns={'Reason': 'Feedback'}, inplace=True)
     codechef_handle_col = 'CODECHEF' if 'CODECHEF' in df.columns else None
     
-    # Generate Feedback message
     df['Feedback'] = df.apply(
         lambda row: f"CODECHEF-START{no} ATTENDED, SOLVED : {row['solve']} ({row.get('CODECHEF', 'N/A')})"
         if pd.isna(row.get('Feedback'))
         else f"CODECHEF-START{no} DID NOT PARTICIPATE, REASON - {row.get('Feedback')} ({row.get('CODECHEF', 'N/A')})",
         axis=1
     )
-    
-    # Calculate Score
     df['solve'] = (df['solve'] >= 2).astype(int)
     
-    # Final cleanup and formatting
     df.rename(columns={'solve': 'Score', 'email': 'Email'}, inplace=True)
     df.set_index("Email", inplace=True)
 
     if codechef_handle_col and codechef_handle_col in df.columns:
         del df[codechef_handle_col]
-        
     if 'Timestamp' in df.columns:
         del df['Timestamp']
-        
     df['RollNumber'] = df['RollNumber'].astype(str).str.upper()
     
     return df
@@ -199,4 +184,5 @@ def app():
             st.markdown(f"**Detailed Error Hint:** The most common cause is missing columns in the uploaded files (e.g., 'Roll No', 'Roll Number', 'Reason', 'CODECHEF'). Also double-check your `requirements.txt` file.")
 
 if __name__ == '__main__':
+
     app()
