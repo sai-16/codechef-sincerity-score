@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import re
 import io
+import openpyxl
 
 def fn_for_streamlit(codechef_df, members_df, feedback_df, handles_df, no):
     data = codechef_df.copy()
@@ -85,7 +86,6 @@ def app():
     """, unsafe_allow_html=True)
 
     st.title("CodeChef Sincerity Score")
- 
     st.header("1. Upload Data Files")
     col1, col2 = st.columns(2)
     
