@@ -21,7 +21,7 @@ def fn_for_streamlit(codechef_df, members_df, feedback_df, handles_df, no):
 
     final_df = merged_df[['email', 'Roll No', 'solve']]
     data2.rename(columns={'Roll Number': 'Roll No'}, inplace=True)
-    data2['Roll No'] = data2['Roll No'].astype(str).str.lower().str().rstrip()
+    data2['Roll No'] = data2['Roll No'].astype(str).str.lower().str.rstrip()
     df = pd.merge(final_df, data2, on='Roll No', how='left')
     df.rename(columns={'Roll No': 'RollNumber'}, inplace=True)
     handles['RollNumber'] = handles['roll_number'].astype(str).str.lower()
@@ -164,5 +164,6 @@ def app():
 
 if __name__ == '__main__':
     app()
+
 
 
